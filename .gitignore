@@ -1,0 +1,36 @@
+# --- Environment & Secret Files ---
+.env
+.env.local
+.env.*.local
+*.env
+
+# --- Node.js / Next.js (Frontend) ---
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/dist/
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/.pnpm-debug.log*
+
+# --- Python / FastAPI (Backend) ---
+backend/__pycache__/
+backend/*.pyc
+backend/*.pyo
+backend/*.pyd
+backend/.venv/
+backend/venv/
+backend/ENV/
+backend/env/
+backend/dist/
+backend/build/
+*.egg-info/
+.pytest_cache/
+
+# --- IDE & Operating System Files ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
