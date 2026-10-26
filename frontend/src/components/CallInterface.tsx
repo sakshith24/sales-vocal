@@ -1,9 +1,10 @@
+/// <reference types="node" />
 'use client'
 
 import { useState, useEffect } from 'react'
 import Vapi from '@vapi-ai/web'
 
-const vapiPublicKey = process.env.NEXT_PUBLIC_VAPI_PUBLIC_KEY || ''
+const vapiPublicKey = process.env.NEXT_PUBLIC_VAPI_PUBLIC_KEY || 'fe142551-710e-4eff-b6bf-55b7d4720ddd'
 const vapi = new Vapi(vapiPublicKey)
 
 export default function CallInterface({ onCallEnded }: { onCallEnded: () => void }) {
@@ -24,7 +25,7 @@ export default function CallInterface({ onCallEnded }: { onCallEnded: () => void
       onCallEnded()
     })
 
-    vapi.on('message', (message) => {
+    vapi.on('message', (message: any) => {
       if (message.type === 'transcript') {
         setTranscript((prev) => [...prev, { role: message.role, message: message.transcript }])
       }
@@ -37,12 +38,12 @@ export default function CallInterface({ onCallEnded }: { onCallEnded: () => void
 
   const startCall = async () => {
     setConnecting(true)
-    // Replace with your Vapi Assistant ID created in the Vapi dashboard
-    const assistantId = 'YOUR_VAPI_ASSISTANT_ID' 
+    // Replace with your actual Vapi Assistant ID from your dashboard
+    const assistantId = 'fe142551-710e-4eff-b6bf-55b7d4720ddd' 
     try {
       await vapi.start(assistantId)
     } catch (err) {
-      console.error(err)
+      console.error('Failed to start call:', err)
       setConnecting(false)
     }
   }
@@ -63,7 +64,6 @@ export default function CallInterface({ onCallEnded }: { onCallEnded: () => void
         </div>
       </div>
 
-      {/* Live Chat Screen Requirement */}
       <div className="flex-1 overflow-y-auto bg-gray-50 p-4 rounded-lg border border-gray-200 mb-4 space-y-3">
         {transcript.length === 0 ? (
           <p className="text-gray-400 text-center text-sm mt-32">Start a call to see live transcript messages...</p>
@@ -71,7 +71,7 @@ export default function CallInterface({ onCallEnded }: { onCallEnded: () => void
           transcript.map((t, idx) => (
             <div key={idx} className={`flex ${t.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               <div className={`max-w-[75%] p-3 rounded-lg text-sm ${t.role === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}`}>
-                <p className="font-xs opacity-75 capitalize mb-1">{t.role}</p>
+                <p className="text-xs opacity-75 capitalize mb-1">{t.role}</p>
                 <p>{t.message}</p>
               </div>
             </div>
@@ -79,13 +79,12 @@ export default function CallInterface({ onCallEnded }: { onCallEnded: () => void
         )}
       </div>
 
-      {/* Call Controls Requirement */}
       <div className="flex gap-4">
         {!active ? (
           <button
             onClick={startCall}
             disabled={connecting}
-            className="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-lg transition"
+            className="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-lg transition disabled:opacity-50"
           >
             {connecting ? 'Connecting...' : 'Start Call'}
           </button>
